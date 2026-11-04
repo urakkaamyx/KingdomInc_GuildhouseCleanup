@@ -1,0 +1,1 @@
+Hides empty troop slots inside Guild House color channels and restores them automatically when troops return. Open menus refresh without saving or reloading. Keeps all eight color selectors and existing output settings. Requires BepInEx 5.

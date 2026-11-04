@@ -1,0 +1,5 @@
+1.0.0 - Initial release
+- Hide troop-type slots when their stored count reaches zero, including stale entries in existing sessions.
+- Restore slots automatically when troops are stored in that color channel again.
+- Refresh open Guild House menus when availability changes.
+- Preserve all eight color selectors, native input choices, output settings, troop data and save format.
