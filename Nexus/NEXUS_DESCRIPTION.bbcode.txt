@@ -1,21 +1,21 @@
-[b]Guild House Cleanup[/b]
-Empty troop slots disappear when their stored count reaches zero and return automatically when troops enter the same color channel again. No save/reload is needed.
+[b]Guild House & Armory Cleanup[/b]
+Empty troop and equipment slots disappear when their stored count reaches zero and return automatically when items enter the same color channel again. No save/reload is needed.
 
 [b]What this fixes[/b]
-The base game leaves an empty troop list behind after the final troop is withdrawn. Its menu treats that list as an available troop type, so a zero-count slot remains visible until a save/reload rebuilds storage. This plugin filters those empty troop entries and refreshes an open Guild House menu when availability changes.
+The base game leaves an empty item list behind after the final item or troop is withdrawn from a shared channel. Its menu treats that list as an available item type, so a zero-count slot remains visible until a save/reload rebuilds storage. This plugin filters those empty entries and refreshes open Guild House and Armory menus when availability changes.
 
 [b]Features[/b]
 [list]
-[*]Hide empty adventurer and conscript slots, including existing stale slots.[/*]
-[*]Show slots again automatically when troops are stored in that channel.[/*]
-[*]Refresh an open Guild House menu within about 0.2 seconds.[/*]
+[*]Hide empty troop and equipment slots, including existing stale slots.[/*]
+[*]Show slots again automatically when items or troops are stored in that channel.[/*]
+[*]Refresh open Guild House and Armory menus within about 0.2 seconds.[/*]
 [*]Keep all eight color selectors and the native input choice available.[/*]
 [*]Keep selected output types configured while their empty slots are hidden.[/*]
 [/list]
-No settings or additional research are required beyond the game's normal Guild House requirements. Troops, storage limits, input costs, equipment Armory entries and save data retain their native behavior. This does not add transfer buttons or delete troops. A troop waiting in an output pipe is outside the shared storage count.
+No settings or additional research are required beyond the game's normal requirements. Troops, equipment, storage limits, input costs, and save data retain their native behavior. This does not add transfer buttons or delete items. Items waiting in an output pipe are outside the shared storage count.
 
 [b]Requirements[/b]
-Kingdom Inc's Unity Mono build on Windows. Tested with Release v1.0.12, Unity 6000.3.27f2 and BepInEx 5.4.23.6.
+Kingdom Inc's Unity Mono build on Windows. Tested with Release v1.0.13, Unity 6000.3.27f2 and BepInEx 5.4.23.6.
 [url=https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.6]BepInEx 5 for Windows x64[/url] is required and is not bundled. Its included Harmony is used; no other mod is required.
 
 [b]Installation[/b]
@@ -23,22 +23,22 @@ Kingdom Inc's Unity Mono build on Windows. Tested with Release v1.0.12, Unity 60
 2. Install BepInEx 5 beside KingdomInc.exe if needed.
 3. Extract this mod's ZIP into that same game folder.
 4. Confirm BepInEx/plugins/GuildhouseCleanup/GuildhouseCleanup.dll exists.
-5. Start the game and open a Guild House. Empty troop slots will be hidden.
+5. Start the game and open a Guild House or Armory. Empty slots will be hidden.
 
 [b]Updating and removal[/b]
 Close the game before replacing the DLL. To remove, delete the GuildhouseCleanup folder under BepInEx/plugins. No save conversion is needed and no custom save fields are added. Native empty-slot behavior returns after removal; the game's normal save/reload cleanup still works.
 
 [b]Verification and compatibility[/b]
-88 isolated Unity runtime checks passed, including draining and refilling all eight channels, preexisting stale lists, live menu changes, selected outputs, native JSON round trips and patch removal. Normal saves and Steam achievements were blocked during verification. The test exercised withdrawal into the native output buffer; it did not play through a complete stockpile production chain or retest companion plugins. Manual installation is supported; Vortex is untested.
+97 isolated Unity runtime checks passed, including draining and refilling all eight channels, preexisting stale lists, live menu changes for Guild Houses and Armories, selected outputs, native JSON round trips and patch removal. Normal saves and Steam achievements were blocked during verification. The test exercised withdrawal into the native output buffer; it did not play through a complete stockpile production chain or retest companion plugins. Manual installation is supported; Vortex is untested.
 
 The table lists a potential patch overlap; sharing a method does not by itself establish a conflict.
 [table]
 [tr][td][b]Class.Method[/b][/td][td][b]May conflict with[/b][/td][/tr]
-[tr][td]ArmoryContents.GetAvailableItemTypes[/td][td]Other changes to available troop entries or Guild House menu choices.[/td][/tr]
+[tr][td]ArmoryContents.GetAvailableItemTypes[/td][td]Other changes to available troop/equipment entries or storage menu choices.[/td][/tr]
 [/table]
 
 [b]Source and credits[/b]
 By rockyamyx / Urakka. [url=https://github.com/urakkaamyx/KingdomInc_GuildhouseCleanup]Source code and GitHub releases[/url]. The thumbnail is AI-generated promotional artwork using the shared Kingdom Inc template and BUG FIX indicator. Gallery gameplay images come from the actual disposable test kingdom. No base-game or BepInEx binaries are distributed. Source-code licensing remains unset.
 
 [b]Troubleshooting[/b]
-Include BepInEx/LogOutput.log, game and plugin versions, color channel and troop type when reporting a problem. Check that the plugin loaded after restarting the game. Stored count excludes troops already waiting in output pipes.
+Include BepInEx/LogOutput.log, game and plugin versions, color channel and item type when reporting a problem. Check that the plugin loaded after restarting the game. Stored count excludes items already waiting in output pipes.

@@ -1,12 +1,12 @@
-# Guild House Cleanup 1.0.0
+# Guild House & Armory Cleanup 1.1.0
 
 [Nexus Mods](https://www.nexusmods.com/kingdominc/mods/17) | [GitHub releases](https://github.com/urakkaamyx/KingdomInc_GuildhouseCleanup/releases)
 
 ![Guild House Cleanup — BUG FIX](Assets/guild-house-cleanup-thumbnail-v1.png)
 
-Hides empty troop-type slots inside Kingdom Inc's Guild House color channels. Slots return automatically when troops of that type are stored in that channel again. An open Guild House menu checks for availability changes every 0.2 seconds. Existing empty slots are handled immediately on opening the menu; no save/reload is needed.
+Hides empty troop and equipment slots inside Kingdom Inc's Guild House and Armory color channels (as well as Libraries, Pantries, Treasuries, and Hoards). Slots return automatically when items or troops of that type are stored in that channel again. An open Guild House or Armory menu checks for availability changes every 0.2 seconds. Existing empty slots are handled immediately on opening the menu; no save/reload is needed.
 
-All eight color selectors stay available. Troops, storage limits, input costs, selected output types, equipment Armory entries, and save data retain their native behavior. This does not add troop transfer or deletion controls. A troop waiting in an output pipe is outside the shared storage count.
+All eight color selectors stay available. Troops, equipment, storage limits, input costs, selected output types, and save data retain their native behavior. This does not add transfer or deletion controls. Items waiting in an output pipe are outside the shared storage count.
 
 ## Install and remove
 
@@ -25,6 +25,6 @@ dotnet build _Mods/GuildhouseCleanup/GuildhouseCleanup.csproj -c Release
 & ./_Mods/GuildhouseCleanup/Tools/package.ps1
 ```
 
-The diagnostic uses a private Unity runtime and disposable player. Normal save loading, disk saves, autosaves and Steam achievements are blocked. It verifies draining/refilling channels, stale entries, live menu refresh, output configuration, native serialization and removal. Version 1.0.0 passed **88 checks** against Kingdom Inc **Release v1.0.12**, Unity **6000.3.27f2**, and BepInEx **5.4.23.6**, with no Unity runtime errors. It exercises withdrawal into the native output buffer, rather than playing through a complete stockpile production chain. See local `Verification/runtime-tests.json` for actual results.
+The diagnostic uses a private Unity runtime and disposable player. Normal save loading, disk saves, autosaves and Steam achievements are blocked. It verifies draining/refilling channels, stale entries, live menu refresh for both Guild Houses and Armories, output configuration, native serialization and removal. Version 1.1.0 passed **97 checks** against Kingdom Inc **Release v1.0.13**, Unity **6000.3.27f2**, and BepInEx **5.4.23.6**, with no Unity runtime errors. It exercises withdrawal into the native output buffer, rather than playing through a complete stockpile production chain. See local `Verification/runtime-tests.json` for actual results.
 
 Author: Urakka / rockyamyx. Plugin ID: `urakka.kingdominc.guildhousecleanup`. Assembly: `GuildhouseCleanup.dll`. Source repository: https://github.com/urakkaamyx/KingdomInc_GuildhouseCleanup. No game assemblies or saves are distributed. The promotional thumbnail was made with built-in image generation using the shared Kingdom Inc template and BUG FIX indicator; it is artwork, not a gameplay screenshot. Source-code licensing remains unset.

@@ -8,6 +8,7 @@ $dllHash = (Get-FileHash -LiteralPath $dll -Algorithm SHA256).Hash.ToLowerInvari
 if (!$report.passed -or $report.version -ne $version -or $report.dllSha256 -ne $dllHash) { throw 'Build must match passing isolated runtime checks.' }
 $release = Join-Path $project 'Releases'
 New-Item -ItemType Directory -Path $release -Force | Out-Null
+Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zipPath = Join-Path $release "KingdomInc-GuildhouseCleanup-$version.zip"
 if (Test-Path -LiteralPath $zipPath) { throw "Release already exists: $zipPath" }

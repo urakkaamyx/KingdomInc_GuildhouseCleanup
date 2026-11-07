@@ -60,17 +60,24 @@ namespace KingdomGuildhouseCleanup
             var equipment = Enumerable.Range(0, ItemType.Count).Select(ItemType.GetById).First(item => item is WeaponItemType);
             var storage = new ArmoryContents(); var armory = new Armory();
             storage.AddItem(0, new InventoryItem(equipment)); storage.ConsumeItem(armory, 0, equipment);
-            Check(storage.GetAvailableItemTypes(0).Contains(equipment), "Empty equipment Armory entry retains native behavior");
+            Check(!storage.GetAvailableItemTypes(0).Contains(equipment), "Empty equipment Armory entry is hidden");
+            storage.AddItem(0, new InventoryItem(equipment));
+            Check(storage.GetAvailableItemTypes(0).Contains(equipment), "Refilling equipment restores Armory slot");
+            storage.ConsumeItem(armory, 0, equipment);
+            Check(!storage.GetAvailableItemTypes(0).Contains(equipment), "Draining equipment hides Armory slot again");
             var conscript = Enumerable.Range(0, ItemType.Count).Select(ItemType.GetById).First(item => item is HumanItemType && !(item is AdventurerItemType));
             storage.AddItem(0, new InventoryItem(conscript)); storage.ConsumeItem(armory, 0, conscript);
             Check(!storage.GetAvailableItemTypes(0).Contains(conscript), "Empty conscript slot is hidden too");
             storage.AddItem(0, new InventoryItem(troop)); storage.ConsumeItem(armory, 0, troop);
             hooks.UnpatchSelf();
             Check(storage.GetAvailableItemTypes(0).Contains(troop), "Removing plugin restores native stale-entry behavior without data changes");
+            Check(storage.GetAvailableItemTypes(0).Contains(equipment), "Removing plugin restores native empty equipment behavior");
             var saved = storage.ToJson(); var loaded = new ArmoryContents(); loaded.FromJson(JsonValue.Parse(saved.ToString()));
             Check(!loaded.GetAvailableItemTypes(0).Contains(troop), "Native reload without plugin accepts save and omits empty entry");
-            hooks.CreateClassProcessor(typeof(AvailableTroops)).Patch();
+            Check(!loaded.GetAvailableItemTypes(0).Contains(equipment), "Native reload without plugin accepts save and omits empty equipment entry");
+            hooks.CreateClassProcessor(typeof(AvailableItems)).Patch();
             Check(!storage.GetAvailableItemTypes(0).Contains(troop), "Reapplying fix hides existing empty slot immediately");
+            Check(!storage.GetAvailableItemTypes(0).Contains(equipment), "Reapplying fix hides existing empty equipment slot immediately");
         }
 
         IEnumerator RuntimeCheck()
@@ -79,7 +86,7 @@ namespace KingdomGuildhouseCleanup
             yield return new WaitForSecondsRealtime(5);
             string directory = Path.Combine(Paths.GameRootPath, "_Mods", "GuildhouseCleanup", "Verification");
             Directory.CreateDirectory(directory);
-            string error = null; ItemType troop = null; Guildhouse guildhouse = null; ArmoryPopup popup = null;
+            string error = null; ItemType troop = null; Guildhouse guildhouse = null; Armory armoryBuilding = null; ArmoryPopup popup = null;
             ArmoryItemRow stableRow = null;
             try
             {
@@ -88,10 +95,12 @@ namespace KingdomGuildhouseCleanup
                 troop = ItemType.Get("adventurer");
                 Check(troop is AdventurerItemType, "Native adventurer definition available");
                 ModelChecks(troop);
-                player.AddTech("armory_unlock_channels"); player.AddTech("guildhouse");
+                player.AddTech("armory_unlock_channels"); player.AddTech("guildhouse"); player.AddTech("armory");
                 player.ActiveFlow.Elements.Clear(); player.ActiveFlow.Pipes.Clear(); player.ActiveFlow.Decorations.Clear();
                 guildhouse = new Guildhouse { Channel = 0 }; guildhouse.OnCreateElement();
+                armoryBuilding = new Armory { Channel = 0, Position = new Vector2Int(5, 5) }; armoryBuilding.OnCreateElement();
                 player.ActiveFlow.Elements.Add(guildhouse);
+                player.ActiveFlow.Elements.Add(armoryBuilding);
                 SceneManager.LoadScene("Game");
             }
             catch (Exception ex) { error = ex.ToString(); }
@@ -156,6 +165,30 @@ namespace KingdomGuildhouseCleanup
                     "Refilled output row retains native selection highlight");
                 popup.ChannelSelected(0);
                 Check(!VisibleTypes(popup).Any(), "Switching back hides empty original channel slot");
+                GameUI.Instance.TogglePopupMenu(popup, false);
+
+                Check(armoryBuilding.World, "Native Armory world created");
+                var armoryWorld = armoryBuilding.World.GetComponent<WorldFlowArmory>();
+                popup.SetElement(armoryWorld); GameUI.Instance.TogglePopupMenu(popup, true);
+                Check(popup.isActiveAndEnabled && !VisibleTypes(popup).Any(), "Opening empty Armory shows no equipment slots");
+                var sword = Enumerable.Range(0, ItemType.Count).Select(ItemType.GetById).First(item => item is WeaponItemType);
+                GamePlayer.Current.Armory.AddItem(0, new InventoryItem(sword));
+            }
+            catch (Exception ex) { error = ex.ToString(); }
+            yield return new WaitForSecondsRealtime(.4f);
+            if (error == null) try
+            {
+                var sword = Enumerable.Range(0, ItemType.Count).Select(ItemType.GetById).First(item => item is WeaponItemType);
+                Check(VisibleTypes(popup).SequenceEqual(new[] { sword }), "Adding weapon while Armory open automatically reveals slot");
+                Capture(Path.Combine(directory, "armory-occupied.png"));
+                GamePlayer.Current.Armory.ConsumeItem(armoryBuilding, 0, sword);
+            }
+            catch (Exception ex) { error = ex.ToString(); }
+            yield return new WaitForSecondsRealtime(.4f);
+            if (error == null) try
+            {
+                Check(!VisibleTypes(popup).Any(), "Withdrawing weapon while Armory open automatically hides slot");
+                Capture(Path.Combine(directory, "armory-empty.png"));
                 GameUI.Instance.TogglePopupMenu(popup, false);
                 Check(runtimeErrors.Count == 0, "Unity reported no runtime errors");
             }

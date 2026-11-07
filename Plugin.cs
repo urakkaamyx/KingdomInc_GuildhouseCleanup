@@ -13,10 +13,10 @@ using UnityEngine;
 
 namespace KingdomGuildhouseCleanup
 {
-    [BepInPlugin(Id, "Guild House Cleanup", Version)]
+    [BepInPlugin(Id, "Guild House & Armory Cleanup", Version)]
     public sealed partial class Plugin : BaseUnityPlugin
     {
-        public const string Id = "urakka.kingdominc.guildhousecleanup", Version = "1.0.0";
+        public const string Id = "urakka.kingdominc.guildhousecleanup", Version = "1.1.0";
         internal static bool Diagnostic => Environment.GetCommandLineArgs().Contains("-guildhouse-cleanup-smoke");
         static readonly MethodInfo RebuildItems = AccessTools.Method(typeof(ArmoryPopup), "_updateItems");
         static readonly FieldInfo RowItem = AccessTools.Field(typeof(ArmoryItemRow), "_item");
@@ -26,9 +26,9 @@ namespace KingdomGuildhouseCleanup
         void Awake()
         {
             hooks = new Harmony(Id);
-            hooks.CreateClassProcessor(typeof(AvailableTroops)).Patch();
+            hooks.CreateClassProcessor(typeof(AvailableItems)).Patch();
             if (Diagnostic) { InstallDiagnostics(); Application.runInBackground = true; StartCoroutine(RuntimeCheck()); }
-            Logger.LogInfo("Guild House Cleanup " + Version + ": empty troop slots hidden; occupied slots return automatically.");
+            Logger.LogInfo("Guild House & Armory Cleanup " + Version + ": empty item and troop slots hidden; occupied slots return automatically.");
         }
 
         void Update()
@@ -46,26 +46,26 @@ namespace KingdomGuildhouseCleanup
         {
             var popup = ArmoryPopup.Instance;
             if (!popup || !popup.isActiveAndEnabled || GamePlayer.Current == null || !popup.Element ||
-                !(popup.Element.Element is Guildhouse guildhouse)) return;
+                !(popup.Element.Element is Armory armory)) return;
 
-            var expected = GamePlayer.Current.Armory.GetAvailableItemTypes(guildhouse.Channel)
-                .Where(guildhouse.CanAcceptItem).OrderBy(item => item.Ordinal);
-            // Rebuild only when a troop type appears/disappears, preserving scroll and clicks otherwise.
+            var expected = GamePlayer.Current.Armory.GetAvailableItemTypes(armory.Channel)
+                .Where(armory.CanAcceptItem).OrderBy(item => item.Ordinal);
+            // Rebuild only when an item type appears/disappears, preserving scroll and clicks otherwise.
             if (!VisibleTypes(popup).SequenceEqual(expected)) RebuildItems.Invoke(popup, null);
         }
 
         [HarmonyPatch(typeof(ArmoryContents), nameof(ArmoryContents.GetAvailableItemTypes))]
-        static class AvailableTroops
+        static class AvailableItems
         {
             static void Postfix(ArmoryContents __instance, int channel, ref IEnumerable<ItemType> __result)
             {
-                __result = OccupiedTroops(__instance, channel, __result);
+                __result = OccupiedItems(__instance, channel, __result);
             }
 
-            static IEnumerable<ItemType> OccupiedTroops(ArmoryContents contents, int channel, IEnumerable<ItemType> items)
+            static IEnumerable<ItemType> OccupiedItems(ArmoryContents contents, int channel, IEnumerable<ItemType> items)
             {
                 foreach (var item in items)
-                    if (!(item is HumanItemType) || contents.GetItemCount(channel, item) > 0)
+                    if (contents.GetItemCount(channel, item) > 0)
                         yield return item;
             }
         }
