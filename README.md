@@ -1,6 +1,6 @@
 # Guild House & Armory Cleanup 1.1.0
 
-[Nexus Mods](https://www.nexusmods.com/kingdominc/mods/17) | [GitHub releases](https://github.com/KingdomIncModding/KingdomInc_GuildhouseCleanup/releases)
+[Nexus Mods](https://www.nexusmods.com/kingdominc/mods/17) | [GitHub releases](https://github.com/KingdomIncModding/GuildhouseCleanup/releases)
 
 ![Guild House Cleanup — BUG FIX](Assets/guild-house-cleanup-thumbnail-v1.png)
 
@@ -27,4 +27,4 @@ dotnet build _Mods/GuildhouseCleanup/GuildhouseCleanup.csproj -c Release
 
 The diagnostic uses a private Unity runtime and disposable player. Normal save loading, disk saves, autosaves and Steam achievements are blocked. It verifies draining/refilling channels, stale entries, live menu refresh for both Guild Houses and Armories, output configuration, native serialization and removal. Version 1.1.0 passed **97 checks** against Kingdom Inc **Release v1.0.13**, Unity **6000.3.27f2**, and BepInEx **5.4.23.6**, with no Unity runtime errors. It exercises withdrawal into the native output buffer, rather than playing through a complete stockpile production chain. See local `Verification/runtime-tests.json` for actual results.
 
-Author: Urakka / rockyamyx. Plugin ID: `urakka.kingdominc.guildhousecleanup`. Assembly: `GuildhouseCleanup.dll`. Source repository: https://github.com/KingdomIncModding/KingdomInc_GuildhouseCleanup. No game assemblies or saves are distributed. The promotional thumbnail was made with built-in image generation using the shared Kingdom Inc template and BUG FIX indicator; it is artwork, not a gameplay screenshot. Source-code licensing remains unset.
+Author: Urakka / rockyamyx. Plugin ID: `urakka.kingdominc.guildhousecleanup`. Assembly: `GuildhouseCleanup.dll`. Source repository: https://github.com/KingdomIncModding/GuildhouseCleanup. No game assemblies or saves are distributed. The promotional thumbnail was made with built-in image generation using the shared Kingdom Inc template and BUG FIX indicator; it is artwork, not a gameplay screenshot. Source-code licensing remains unset.

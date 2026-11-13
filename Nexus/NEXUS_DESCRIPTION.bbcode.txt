@@ -38,7 +38,7 @@ The table lists a potential patch overlap; sharing a method does not by itself e
 [/table]
 
 [b]Source and credits[/b]
-By rockyamyx / Urakka. [url=https://github.com/KingdomIncModding/KingdomInc_GuildhouseCleanup]Source code and GitHub releases[/url]. The thumbnail is AI-generated promotional artwork using the shared Kingdom Inc template and BUG FIX indicator. Gallery gameplay images come from the actual disposable test kingdom. No base-game or BepInEx binaries are distributed. Source-code licensing remains unset.
+By rockyamyx / Urakka. [url=https://github.com/KingdomIncModding/GuildhouseCleanup]Source code and GitHub releases[/url]. The thumbnail is AI-generated promotional artwork using the shared Kingdom Inc template and BUG FIX indicator. Gallery gameplay images come from the actual disposable test kingdom. No base-game or BepInEx binaries are distributed. Source-code licensing remains unset.
 
 [b]Troubleshooting[/b]
 Include BepInEx/LogOutput.log, game and plugin versions, color channel and item type when reporting a problem. Check that the plugin loaded after restarting the game. Stored count excludes items already waiting in output pipes.

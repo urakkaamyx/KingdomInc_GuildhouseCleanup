@@ -32,7 +32,7 @@ Other changes to ArmoryContents.GetAvailableItemTypes or storage menu choices ma
 
 LINKS
 Nexus: https://www.nexusmods.com/kingdominc/mods/17
-Source and releases: https://github.com/KingdomIncModding/KingdomInc_GuildhouseCleanup
+Source and releases: https://github.com/KingdomIncModding/GuildhouseCleanup
 Report problems with game/plugin versions, color channel, troop type and BepInEx/LogOutput.log.
 
 The promotional thumbnail uses AI-generated artwork from the shared Kingdom Inc template and BUG FIX indicator. Gameplay screenshots were captured from a disposable test kingdom. No game or BepInEx assemblies, saves or other plugins are distributed. Source-code licensing remains unset.
