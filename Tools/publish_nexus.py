@@ -230,8 +230,8 @@ def main():
 
     # 5. Save Receipt
     record["github"] = {
-        "repository": "https://github.com/urakkaamyx/KingdomInc_GuildhouseCleanup",
-        "release": f"https://github.com/urakkaamyx/KingdomInc_GuildhouseCleanup/releases/tag/v{VERSION}",
+        "repository": "https://github.com/KingdomIncModding/KingdomInc_GuildhouseCleanup",
+        "release": f"https://github.com/KingdomIncModding/KingdomInc_GuildhouseCleanup/releases/tag/v{VERSION}",
         "tag": f"v{VERSION}",
     }
     RECEIPT.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
